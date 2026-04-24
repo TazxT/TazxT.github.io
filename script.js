@@ -39,7 +39,7 @@ body {
 ::-webkit-scrollbar-track { background: var(--ink); }
 ::-webkit-scrollbar-thumb { background: var(--indigo); border-radius: 4px; }
 
-/* Preloader */
+
 #preloader {
     position: fixed;
     inset: 0;
@@ -136,7 +136,7 @@ body {
     margin-top: .8rem;
 }
 
-/* Partículas */
+
 #particleCanvas {
     position: fixed;
     inset: 0;
@@ -144,7 +144,7 @@ body {
     pointer-events: none;
 }
 
-/* Header */
+
 header {
     position: fixed;
     top: 0; left: 0;
@@ -237,7 +237,7 @@ header.scrolled {
 
 main { position: relative; z-index: 1; }
 
-/* Hero */
+
 .hero {
     min-height: 100vh;
     display: flex;
@@ -329,7 +329,7 @@ main { position: relative; z-index: 1; }
     to { opacity:1; transform:translateY(0); }
 }
 
-/* Botones */
+
 .btn {
     display: inline-flex;
     align-items: center;
@@ -375,7 +375,6 @@ main { position: relative; z-index: 1; }
     border-color: rgba(255,255,255,.25);
 }
 
-/* Secciones */
 section {
     padding: 10rem 5%;
     position: relative;
@@ -420,7 +419,7 @@ section {
     transform: none;
 }
 
-/* About */
+
 .about-inner { max-width: 1000px; margin: 0 auto; }
 .about-desc {
     font-size: 1.6rem;
@@ -451,7 +450,7 @@ section {
 .feat-card h4 { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700; margin-bottom: .8rem; }
 .feat-card p { font-size: 1.3rem; color: var(--off-white); line-height: 1.6; }
 
-/* Tech grid (opcional) */
+
 .tech-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
@@ -481,7 +480,6 @@ section {
 }
 .tech-pill .t-note { font-size: 1.1rem; color: var(--off-white); margin-top: .3rem; }
 
-/* Proyectos */
 .projects-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -550,7 +548,7 @@ section {
     margin-bottom: 1rem;
 }
 
-/* Skills */
+
 .skills-wrap { max-width: 720px; }
 .skill-row { margin-bottom: 2.8rem; }
 .skill-head {
@@ -587,9 +585,6 @@ section {
     100% { transform: translateX(100%); }
 }
 
-/* ------------------------- */
-/*  NUEVO: PhantomOS Section */
-/* ------------------------- */
 #phantom {
     background: var(--ink);
     position: relative;
@@ -689,7 +684,7 @@ section {
     color: var(--rose);
 }
 
-/* Demo */
+
 .demo-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -793,7 +788,7 @@ section {
 }
 .perf-label { font-family: var(--font-mono); font-size: 1.2rem; color: var(--off-white); }
 
-/* Contacto */
+
 .contact-inner { max-width: 760px; }
 .contact-meta { display: flex; flex-direction: column; gap: 1.2rem; margin-bottom: 4rem; }
 .contact-row { display: flex; align-items: center; gap: 1.4rem; font-size: 1.5rem; color: var(--off-white); }
@@ -822,7 +817,7 @@ section {
 .social-card[data-net="x"] { --s-color: var(--white); }
 .social-card[data-net="github"] { --s-color: #e5e5e5; }
 
-/* Footer */
+
 footer {
     border-top: 1px solid var(--border);
     padding: 4rem 5%;
@@ -913,7 +908,7 @@ footer {
     opacity: .5;
 }
 
-/* Botón "Volver arriba" */
+
 #backToTop {
     position: fixed;
     bottom: 2rem;
@@ -946,7 +941,7 @@ footer {
     border-color: var(--volt);
 }
 
-/* Responsive */
+
 @media (max-width: 768px) {
     html { font-size: 55%; }
     .nav-links {
