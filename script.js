@@ -1,3 +1,4 @@
+// --- PRELOADER ---
 (function() {
     const steps = Array.from(document.querySelectorAll('.pre-step'));
     const fill = document.getElementById('preBarFill');
@@ -20,61 +21,88 @@
     setTimeout(() => activateStep(0), 200);
 })();
 
+// --- Fondo de bajo nivel: matriz de bytes hexadecimales ---
 (function() {
-    const canvas = document.getElementById('particleCanvas');
+    const canvas = document.getElementById('matrixCanvas');
     const ctx = canvas.getContext('2d');
-    let W, H, particles = [], mouse = { x: -999, y: -999 };
-    function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
-    class Dot {
-        constructor() { this.reset(); }
-        reset() {
-            this.x = Math.random() * W;
-            this.y = Math.random() * H;
-            this.vx = (Math.random() - .5) * .4;
-            this.vy = (Math.random() - .5) * .4;
-            this.r = Math.random() * 1.5 + .5;
-            const palette = ['rgba(123,94,167,.5)', 'rgba(193,73,90,.4)', 'rgba(201,255,59,.35)'];
-            this.color = palette[Math.floor(Math.random() * palette.length)];
-        }
-        update() {
-            this.x += this.vx;
-            this.y += this.vy;
-            if (this.x < 0 || this.x > W) this.vx *= -1;
-            if (this.y < 0 || this.y > H) this.vy *= -1;
-            const dx = mouse.x - this.x;
-            const dy = mouse.y - this.y;
-            const dist = Math.hypot(dx, dy);
-            if (dist < 90) { this.x -= dx * .018; this.y -= dy * .018; }
-        }
-        draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2); ctx.fillStyle = this.color; ctx.fill(); }
+    let W, H, drops = [];
+    const fontSize = 12;
+    const chars = '0123456789ABCDEF';
+    const colors = ['rgba(123,94,167,', 'rgba(56,189,248,', 'rgba(201,255,59,'];
+
+    function resize() {
+        W = canvas.width = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+        const cols = Math.ceil(W / fontSize);
+        drops = Array.from({ length: cols }, () => Math.random() * -100);
     }
-    function init() { const count = Math.min(80, Math.floor((W * H) / 12000)); particles = Array.from({ length: count }, () => new Dot()); }
-    function loop() {
-        ctx.clearRect(0, 0, W, H);
-        particles.forEach(p => { p.update(); p.draw(); });
-        for (let i = 0; i < particles.length; i++) {
-            for (let j = i + 1; j < particles.length; j++) {
-                const dx = particles[i].x - particles[j].x;
-                const dy = particles[i].y - particles[j].y;
-                const d = Math.hypot(dx, dy);
-                if (d < 110) {
-                    ctx.beginPath();
-                    ctx.strokeStyle = `rgba(123,94,167,${.15 * (1 - d / 110)})`;
-                    ctx.lineWidth = .5;
-                    ctx.moveTo(particles[i].x, particles[i].y);
-                    ctx.lineTo(particles[j].x, particles[j].y);
-                    ctx.stroke();
-                }
+
+    function draw() {
+        ctx.fillStyle = 'rgba(6,6,13,0.08)';
+        ctx.fillRect(0, 0, W, H);
+        ctx.font = fontSize + 'px monospace';
+
+        drops.forEach((y, i) => {
+            const char = chars[Math.floor(Math.random() * chars.length)];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const alpha = Math.random() * 0.4 + 0.2;
+            
+            ctx.fillStyle = color + alpha + ')';
+            ctx.fillText(char, i * fontSize, y * fontSize);
+
+            if (y * fontSize > H && Math.random() > 0.975) {
+                drops[i] = 0;
             }
-        }
-        requestAnimationFrame(loop);
+            drops[i]++;
+        });
     }
-    window.addEventListener('resize', () => { resize(); init(); });
-    window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
-    window.addEventListener('mouseleave', () => { mouse.x = -999; mouse.y = -999; });
-    resize(); init(); loop();
+
+    resize();
+    window.addEventListener('resize', resize);
+    setInterval(draw, 50);
 })();
 
+// --- Generar bytes hexadecimales flotantes ---
+(function() {
+    const container = document.getElementById('hexFloats');
+    const hexChars = '0123456789ABCDEF';
+
+    function generateHex() {
+        let hex = '';
+        for (let i = 0; i < 8; i++) {
+            hex += hexChars[Math.floor(Math.random() * hexChars.length)];
+        }
+        return hex;
+    }
+
+    function createFloat() {
+        const el = document.createElement('span');
+        el.className = 'hex-float';
+        el.textContent = `0x${generateHex()}`;
+        el.style.left = Math.random() * 100 + '%';
+        el.style.animationDuration = (Math.random() * 15 + 10) + 's';
+        el.style.animationDelay = (Math.random() * 5) + 's';
+        container.appendChild(el);
+
+        setTimeout(() => {
+            el.remove();
+        }, 25000);
+    }
+
+    for (let i = 0; i < 20; i++) {
+        setTimeout(() => createFloat(), i * 500);
+    }
+
+    setInterval(createFloat, 3000);
+})();
+
+// --- Línea de código en movimiento ---
+(function() {
+    const line = document.getElementById('codeLine');
+    line.textContent = '> mov eax, [ebx+ecx*4] | xor edx, edx | syscall | malloc(0x1F) | while(true) { optimize(); } | low_level_tweak.exe --aggressive';
+})();
+
+// --- TYPING EFFECT ---
 (function() {
     const lines = ["System Optimizer for gaming", "Windows Specialist & Enthusiast", "Ex-Partner at Rhideops", "Low-Level Tweaking Professional", "PC Enthusiast & Benchmarker", "Latency hunter since day one"];
     let li = 0, ci = 0, deleting = false;
@@ -94,6 +122,7 @@
     setTimeout(tick, 1200);
 })();
 
+// --- NAVEGACIÓN ---
 (function() {
     const header = document.getElementById('site-header');
     const links = document.querySelectorAll('.nav-links a');
@@ -110,6 +139,7 @@
     navList.querySelectorAll('a').forEach(a => { a.addEventListener('click', () => { navList.classList.remove('open'); icon.className = 'fas fa-bars'; }); });
 })();
 
+// --- ANIMACIONES REVEAL ---
 (function() {
     const revealObs = new IntersectionObserver((entries) => { entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); revealObs.unobserve(e.target); } }); }, { threshold: 0.12 });
     document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
@@ -117,36 +147,7 @@
     document.querySelectorAll('.skill-fill').forEach(b => barObs.observe(b));
 })();
 
-let metrics = { cpu: 0, mem: 0, io: 0, cache: 0 };
-function runDemo() {
-    const out = document.getElementById('consoleOut');
-    out.innerHTML = '';
-    const msgs = [
-        { text: 'Iniciando TazxPerformance Check...', cls: 'c-line' }, { text: 'Analizando configuración del sistema...', cls: 'c-line' },
-        { text: 'Verificando optimizaciones de CPU...', cls: 'c-line' }, { text: 'Chequeando gestión de memoria...', cls: 'c-line' },
-        { text: 'Analizando rendimiento de disco...', cls: 'c-line' }, { text: '=== RESULTADOS ===', cls: 'c-head' },
-        { text: '[CPU_Optimization]   Optimal', cls: 'c-ok' }, { text: '[Memory_Management]  Optimal', cls: 'c-ok' },
-        { text: '[Disk_Performance]   Good', cls: 'c-warn' }, { text: '[Network_Latency]    Optimal', cls: 'c-ok' },
-        { text: '[Power_Settings]     Tuned', cls: 'c-ok' }, { text: '', cls: 'c-line' },
-        { text: 'Overall System Score: 94/100', cls: 'c-head' }, { text: 'Status: OPTIMIZED ✓', cls: 'c-ok' }, { text: '_', cls: 'c-line' }
-    ];
-    let i = 0;
-    function next() { if (i >= msgs.length) return; const d = document.createElement('div'); d.className = msgs[i].cls; d.textContent = msgs[i].text; out.appendChild(d); out.scrollTop = out.scrollHeight; i++; setTimeout(next, 220); }
-    next();
-    updateMetrics();
-}
-function updateMetrics() {
-    const rand = (base, spread) => Math.min(100, Math.max(5, base + (Math.random() * spread - spread / 2)));
-    metrics.cpu = rand(metrics.cpu || 45, 12); metrics.mem = rand(metrics.mem || 70, 8); metrics.io = rand(metrics.io || 15, 8); metrics.cache = rand(metrics.cache || 82, 6);
-    document.getElementById('statCpu').textContent = metrics.cpu.toFixed(1) + '%'; document.getElementById('statMem').textContent = metrics.mem.toFixed(1) + '%';
-    document.getElementById('statIo').textContent = metrics.io.toFixed(1) + 'ms'; document.getElementById('statCache').textContent = metrics.cache.toFixed(1) + '%';
-    const score = ((metrics.cpu + metrics.mem + (100 - metrics.io / .5) + metrics.cache) / 4).toFixed(1);
-    document.getElementById('perfScore').textContent = score + '%';
-}
-setInterval(updateMetrics, 3000);
-updateMetrics();
-
-
+// --- BACK TO TOP ---
 (function() {
     const btn = document.getElementById('backToTop');
     window.addEventListener('scroll', () => {
@@ -155,4 +156,85 @@ updateMetrics();
     btn.addEventListener('click', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
     });
+})();
+
+// --- Carga dinámica de aplicaciones desde GitHub ---
+(function() {
+    const API_URL = 'https://api.github.com/repos/TazxT/TazxT.github.io/contents/Install';
+    const grid = document.getElementById('installGrid');
+
+    function getIcon(filename) {
+        const ext = filename.split('.').pop().toLowerCase();
+        const icons = {
+            bat: 'fa-terminal',
+            ps1: 'fa-cogs',
+            reg: 'fa-database',
+            exe: 'fa-cloud-download-alt',
+            msi: 'fa-box',
+            zip: 'fa-file-archive',
+            rar: 'fa-file-archive',
+            '7z': 'fa-file-archive',
+            txt: 'fa-file-alt',
+            pdf: 'fa-file-pdf',
+            png: 'fa-image',
+            jpg: 'fa-image',
+            svg: 'fa-image',
+            default: 'fa-file-code'
+        };
+        return icons[ext] || icons.default;
+    }
+
+    async function loadInstallApps() {
+        try {
+            const response = await fetch(API_URL);
+            if (!response.ok) throw new Error('Error al obtener la lista de archivos');
+            const files = await response.json();
+
+            grid.innerHTML = '';
+
+            files.forEach(file => {
+                if (file.type !== 'file') return;
+
+                const filename = file.name;
+                const downloadUrl = `https://raw.githubusercontent.com/TazxT/TazxT.github.io/main/Install/${filename}`;
+                const iconClass = getIcon(filename);
+                const sizeKB = (file.size / 1024).toFixed(1);
+
+                const card = document.createElement('div');
+                card.className = 'install-card reveal';
+                card.innerHTML = `
+                    <div class="install-icon"><i class="fas ${iconClass}"></i></div>
+                    <h3>${filename}</h3>
+                    <p>Tamaño: ${sizeKB} KB</p>
+                    <a href="${downloadUrl}" class="btn btn-primary" download>
+                        <i class="fas fa-download"></i> Descargar
+                    </a>
+                `;
+                grid.appendChild(card);
+
+                const revealObs = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                            revealObs.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.12 });
+                revealObs.observe(card);
+            });
+
+            if (grid.children.length === 0) {
+                grid.innerHTML = '<div class="install-loading">No se encontraron aplicaciones.</div>';
+            }
+        } catch (error) {
+            console.error(error);
+            grid.innerHTML = '<div class="install-loading" style="color:var(--rose);">Error al cargar las apps. Revisa la consola.</div>';
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', loadInstallApps);
+    } else {
+        loadInstallApps();
+    }
 })();
