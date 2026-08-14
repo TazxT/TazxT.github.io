@@ -28,7 +28,11 @@
     </div>
 </div>
 
-<canvas id="particleCanvas"></canvas>
+<canvas id="matrixCanvas"></canvas>
+<div class="hex-grid"></div>
+<div class="hex-floats" id="hexFloats"></div>
+<div class="code-line" id="codeLine"></div>
+<div class="scanlines"></div>
 
 <header id="site-header">
     <div class="nav-wrap">
@@ -41,7 +45,8 @@
                 <li><a href="#projects">Proyectos</a></li>
                 <li><a href="#skills">Skills</a></li>
                 <li><a href="#phantom">PhantomOS</a></li>
-                <li><a href="#demo">Demo</a></li>
+                <li><a href="#install">Instalar</a></li>
+                <li><a href="#guides">Guías</a></li>
                 <li><a href="#contact">Contacto</a></li>
             </ul>
         </nav>
@@ -55,7 +60,7 @@
             <h1>Hola, soy<br><span class="grad">Tazx</span></h1>
             <div class="typing-row"><span class="typing-prompt">$&gt;</span><span id="typingText"></span><span class="cursor"></span></div>
             <p class="hero-desc">Especialista en optimización de sistemas Windows, tweaks avanzados y maximización de rendimiento.</p>
-            <div class="hero-ctas"><a href="#projects" class="btn btn-primary"><i class="fas fa-rocket"></i> Ver Proyectos</a><a href="#demo" class="btn btn-ghost"><i class="fas fa-terminal"></i> Probar Demo</a></div>
+            <div class="hero-ctas"><a href="#projects" class="btn btn-primary"><i class="fas fa-rocket"></i> Ver Proyectos</a><a href="#install" class="btn btn-ghost"><i class="fas fa-download"></i> Descargar Apps</a></div>
         </div>
     </section>
 
@@ -127,7 +132,6 @@
         </div>
     </section>
 
-
     <section id="phantom">
         <div class="phantom-inner">
             <p class="section-label">// sistema operativo</p>
@@ -139,7 +143,6 @@
             </div>
 
             <div class="phantom-grid">
-
                 <div class="phantom-card reveal">
                     <h3><i class="fas fa-exclamation-triangle"></i> Herramientas y funciones no compatibles</h3>
                     <ul class="incompat-list">
@@ -173,33 +176,53 @@
         </div>
     </section>
 
-    <section id="demo">
-        <p class="section-label">// demo interactiva</p>
-        <h2 class="section-heading reveal">Pruébalo <span class="grad">ahora</span></h2>
-        <div class="demo-grid">
-            <div class="editor-shell reveal">
-                <div class="editor-bar"><div class="editor-dots"><span class="d-red"></span><span class="d-yel"></span><span class="d-grn"></span></div><span class="editor-filename">perf_check.ps1</span><button class="run-btn" id="runBtn" onclick="runDemo()">▶ Ejecutar</button></div>
-                <div class="editor-code"><pre><span class="cm"># TazxPerformance — Demo interactivo</span>
-<span class="cm"># Revisamos métricas que importan de verdad</span>
 
-<span class="kw">$</span><span class="nb">metrics</span> <span class="op">=</span> <span class="op">@{</span>
-  <span class="str">CPU_Optimization</span>   <span class="op">=</span> <span class="str">"Optimal"</span>
-  <span class="str">Memory_Management</span>  <span class="op">=</span> <span class="str">"Optimal"</span>
-  <span class="str">Disk_Performance</span>   <span class="op">=</span> <span class="str">"Good"</span>
-  <span class="str">Network_Latency</span>    <span class="op">=</span> <span class="str">"Optimal"</span>
-  <span class="str">Power_Settings</span>     <span class="op">=</span> <span class="str">"Tuned"</span>
-<span class="op">}</span>
-
-<span class="kw">foreach</span> <span class="op">(</span><span class="kw">$</span><span class="nb">m</span> <span class="kw">in</span> <span class="kw">$</span><span class="nb">metrics</span><span class="op">.GetEnumerator())</span> <span class="op">{</span>
-  <span class="fn">Write-Host</span> <span class="str">"[$($m.Key)]"</span> <span class="op">-NoNewline</span>
-  <span class="fn">Write-Host</span> <span class="str">" $($m.Value)"</span> <span class="op">-ForegroundColor</span> <span class="nb">Green</span>
-<span class="op">}</span>
-
-<span class="fn">Write-Host</span> <span class="str">"`nScore: 94/100 — OPTIMIZED ✓"</span></pre></div>
+    <section id="install">
+        <p class="section-label">// instalación</p>
+        <h2 class="section-heading reveal">Descarga <span class="grad">herramientas para tu pc!</span></h2>
+        <p class="install-intro reveal">Optimiza tu sistema con un solo clic. Todas las aplicaciones son portables, seguras y probadas en entornos reales. Descarga directa desde el repositorio oficial.</p>
+        <div id="installGrid" class="install-grid">
+            <div class="install-loading">
+                <i class="fas fa-spinner fa-pulse"></i> Cargando lista de aplicaciones...
             </div>
-            <div class="console-shell reveal" id="consoleOut"><div class="c-line">TazxTweaks Console v2.0</div><div class="c-line">Presiona ▶ Ejecutar para iniciar el análisis</div><div class="c-line">_</div></div>
         </div>
-        <div class="perf-panel reveal"><div class="perf-head"><h3>Monitor en Tiempo Real</h3><span class="perf-score" id="perfScore">—</span></div><div class="perf-stats"><div class="perf-stat"><span class="perf-value" id="statCpu">—</span><span class="perf-label">CPU Usage</span></div><div class="perf-stat"><span class="perf-value" id="statMem">—</span><span class="perf-label">Memory Efficiency</span></div><div class="perf-stat"><span class="perf-value" id="statIo">—</span><span class="perf-label">I/O Latency</span></div><div class="perf-stat"><span class="perf-value" id="statCache">—</span><span class="perf-label">Cache Hit Rate</span></div></div></div>
+        <div class="install-more reveal">
+            <a href="https://github.com/TazxT/TazxT.github.io/tree/main/Install" target="_blank" rel="noopener" class="btn btn-ghost">
+                <i class="fab fa-github"></i> Ver repositorio completo
+            </a>
+        </div>
+    </section>
+
+
+    <section id="guides">
+        <p class="section-label">// aprendizaje</p>
+        <h2 class="section-heading reveal">Guías <span class="grad">próximamente</span></h2>
+        <div class="guides-grid">
+            <div class="guide-card reveal">
+                <div class="guide-icon"><i class="fas fa-book"></i></div>
+                <h3>Guía de Optimización Windows</h3>
+                <p>Proximamente.</p>
+                <span class="guide-status">Próximamente</span>
+            </div>
+            <div class="guide-card reveal">
+                <div class="guide-icon"><i class="fas fa-chart-bar"></i></div>
+                <h3>Benchmarking Real</h3>
+                <p>Pronto</p>
+                <span class="guide-status">Próximamente</span>
+            </div>
+            <div class="guide-card reveal">
+                <div class="guide-icon"><i class="fas fa-microchip"></i></div>
+                <h3>Arquitectura de Hardware</h3>
+                <p>Proximamente</p>
+                <span class="guide-status">Próximamente</span>
+            </div>
+            <div class="guide-card reveal">
+                <div class="guide-icon"><i class="fas fa-shield-alt"></i></div>
+                <h3>Privacidad y Seguridad</h3>
+                <p>Proximamente</p>
+                <span class="guide-status">Próximamente</span>
+            </div>
+        </div>
     </section>
 
     <section id="contact">
@@ -218,7 +241,8 @@
             <li><a href="#projects">Proyectos</a></li>
             <li><a href="#skills">Skills</a></li>
             <li><a href="#phantom">PhantomOS</a></li>
-            <li><a href="#demo">Demo</a></li>
+            <li><a href="#install">Instalar</a></li>
+            <li><a href="#guides">Guías</a></li>
             <li><a href="#contact">Contacto</a></li>
         </ul>
         <div class="credits-section">
